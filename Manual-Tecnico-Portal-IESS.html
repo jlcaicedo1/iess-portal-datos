@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual Técnico — Portal Maestro IESS · GSI-P05</title>
+<style>
+:root {
+  --pr:#1a3a5c; --prl:#2557a0; --ac:#e8a000; --ac-dark:#c88800;
+  --ok:#1f7a4a; --ok-bg:#e8f5ed;
+  --warn:#c86400; --warn-bg:#fff5e6;
+  --info:#1565c0; --info-bg:#e3f2fd;
+  --bg:#f0f3f7; --card:#fff; --bd:#dde2ea; --bd2:#b0bac8;
+  --tx:#1c2938; --mid:#3d5166; --muted:#6b7b8d;
+  --code-bg:#1e293b; --code-tx:#e2e8f0;
+  --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:15px;line-height:1.65}
+a{color:var(--prl);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+
+/* ── HEADER ── */
+.hd{background:var(--pr);color:#fff;padding:0 32px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.hd-title{padding:16px 0;flex:1}
+.hd-title h1{font-size:18px;font-weight:800;line-height:1.2}
+.hd-title .sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:3px}
+.hd-badge{background:var(--ac);color:var(--pr);font-size:11px;font-weight:800;padding:5px 14px;border-radius:20px;white-space:nowrap}
+
+/* ── LAYOUT ── */
+.wrap{display:flex;max-width:1200px;margin:0 auto;padding:32px 24px;gap:28px;align-items:flex-start}
+.toc{width:230px;flex-shrink:0;position:sticky;top:64px;max-height:calc(100vh - 90px);overflow-y:auto}
+.toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);padding:0 0 8px;border-bottom:2px solid var(--bd);margin-bottom:10px}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:2px}
+.toc-list li a{display:block;padding:6px 10px;font-size:12.5px;color:var(--mid);border-radius:6px;transition:all .15s;border-left:2px solid transparent}
+.toc-list li a:hover{background:#e8effa;color:var(--pr);text-decoration:none}
+.toc-list li.active a{background:#dbeafe;color:var(--pr);border-left-color:var(--prl);font-weight:700;text-decoration:none}
+.toc-list .toc-sub{padding-left:14px}
+.content{flex:1;min-width:0;display:flex;flex-direction:column;gap:32px}
+
+/* ── SECCIÓN ── */
+.sec{background:var(--card);border:1px solid var(--bd);border-radius:var(--radius);overflow:hidden}
+.sec-hd{background:linear-gradient(to right,var(--pr),var(--prl));color:#fff;padding:18px 24px;display:flex;align-items:center;gap:12px}
+.sec-hd .sec-icon{width:36px;height:36px;background:rgba(255,255,255,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.sec-hd h2{font-size:16px;font-weight:800;letter-spacing:.2px}
+.sec-hd .sec-num{font-size:11px;color:var(--ac);font-weight:700;margin-top:2px}
+.sec-body{padding:24px}
+
+/* ── CONTENT ELEMENTS ── */
+h3{font-size:15px;font-weight:800;color:var(--pr);margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--bd)}
+h3:first-child{margin-top:0}
+h4{font-size:13.5px;font-weight:700;color:var(--mid);margin:14px 0 6px}
+p{font-size:14px;color:var(--tx);margin-bottom:10px;line-height:1.7}
+ul,ol{padding-left:20px;margin-bottom:12px}
+ul li,ol li{font-size:14px;margin-bottom:5px;color:var(--tx);line-height:1.6}
+ul li::marker{color:var(--ac)}
+
+/* ── CALLOUTS ── */
+.call{border-radius:8px;padding:14px 16px;margin:14px 0;display:flex;gap:12px;align-items:flex-start;font-size:13.5px;line-height:1.6}
+.call-icon{flex-shrink:0;font-size:18px;margin-top:1px}
+.call-body strong{display:block;margin-bottom:3px;font-size:13px}
+.call.info{background:var(--info-bg);border:1px solid #90caf9;color:#0d47a1}
+.call.ok{background:var(--ok-bg);border:1px solid #a8d5b7;color:#1b5e20}
+.call.warn{background:var(--warn-bg);border:1px solid #ffc882;color:#7c4a00}
+
+/* ── CODE ── */
+.code-block{background:var(--code-bg);color:var(--code-tx);border-radius:8px;padding:16px 18px;font-family:'Consolas','Courier New',monospace;font-size:12.5px;line-height:1.7;overflow-x:auto;margin:12px 0;position:relative}
+.code-block .code-label{position:absolute;top:8px;right:12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px}
+.code-inline{background:#e8effa;color:var(--pr);font-family:monospace;font-size:12.5px;padding:2px 7px;border-radius:4px;font-weight:600}
+
+/* ── TABLAS ── */
+.tbl-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--bd);margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{background:var(--pr);color:#fff;padding:9px 12px;text-align:left;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--bd);vertical-align:top;line-height:1.55}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even) td{background:#f8faff}
+tbody tr:hover td{background:#eef4ff}
+td code{background:#e8effa;color:var(--pr);font-family:monospace;font-size:11.5px;padding:1px 6px;border-radius:3px}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;white-space:nowrap}
+.badge.ok{background:var(--ok-bg);color:var(--ok)}
+.badge.warn{background:var(--warn-bg);color:var(--warn)}
+.badge.navy{background:#dbeafe;color:#1e40af}
+.badge.gold{background:#fef3c7;color:#92400e}
+.badge.purple{background:#ede9fe;color:#5b21b6}
+
+/* ── STEP LIST ── */
+.steps{counter-reset:step;display:flex;flex-direction:column;gap:14px;margin:12px 0}
+.step{display:flex;gap:14px;align-items:flex-start}
+.step-num{width:28px;height:28px;background:var(--pr);color:var(--ac);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:2px}
+.step-body{flex:1}
+.step-title{font-size:13.5px;font-weight:700;color:var(--pr);margin-bottom:4px}
+.step-desc{font-size:13px;color:var(--mid);line-height:1.6}
+
+/* ── FILE TREE ── */
+.tree{font-family:'Consolas','Courier New',monospace;font-size:12.5px;background:#f8faff;border:1px solid var(--bd);border-radius:8px;padding:16px 18px;line-height:1.8;color:var(--tx);margin:12px 0}
+.tree .dir{color:var(--pr);font-weight:700}
+.tree .file{color:var(--mid)}
+.tree .file.active{color:var(--ok);font-weight:700}
+.tree .note{color:var(--muted);font-style:italic;font-size:11.5px}
+
+/* ── PIE ── */
+#footer{background:var(--pr);color:rgba(255,255,255,.6);padding:20px 32px;font-size:12px;margin-top:40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+#footer strong{color:#fff}
+.version-tag{background:rgba(232,160,0,.25);color:var(--ac);padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .wrap{flex-direction:column;padding:20px 16px}
+  .toc{width:100%;position:static;max-height:none}
+}
+@media print{
+  .hd,.toc,#footer{display:none}
+  .wrap{padding:0}
+  .sec{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hd">
+  <div class="hd-title">
+    <h1>Manual Técnico — Portal Maestro Institucional</h1>
+    <div class="sub">Instituto Ecuatoriano de Seguridad Social · Gestión de Tratamiento de Datos Personales</div>
+  </div>
+  <span class="hd-badge">GSI-P05 · v1.0</span>
+</div>
+
+<div class="wrap">
+
+  <!-- TABLA DE CONTENIDOS -->
+  <nav class="toc" aria-label="Contenido del manual">
+    <div class="toc-title">Contenido</div>
+    <ul class="toc-list" id="toc-list">
+      <li><a href="#sec-intro">1. Introducción</a></li>
+      <li><a href="#sec-estructura">2. Estructura del Portal</a></li>
+      <li class="toc-sub"><a href="#sec-estructura-archivos">2.1 Árbol de archivos</a></li>
+      <li class="toc-sub"><a href="#sec-estructura-secciones">2.2 Secciones del portal</a></li>
+      <li><a href="#sec-abrir">3. Cómo abrir el portal</a></li>
+      <li><a href="#sec-agregar-doc">4. Agregar documentos</a></li>
+      <li class="toc-sub"><a href="#sec-agregar-html">4.1 Enlazar un HTML</a></li>
+      <li class="toc-sub"><a href="#sec-agregar-pdf">4.2 Enlazar un PDF</a></li>
+      <li class="toc-sub"><a href="#sec-agregar-instructivo">4.3 Activar un instructivo</a></li>
+      <li class="toc-sub"><a href="#sec-agregar-formato">4.4 Activar un formato</a></li>
+      <li class="toc-sub"><a href="#sec-agregar-herramienta">4.5 Agregar herramienta</a></li>
+      <li><a href="#sec-logo">5. Logo y branding</a></li>
+      <li><a href="#sec-estado">6. Estados de documento</a></li>
+      <li><a href="#sec-manual-tabs">7. Tabs del Manual</a></li>
+      <li><a href="#sec-google">8. Migración a Google Drive</a></li>
+      <li><a href="#sec-mant">9. Mantenimiento</a></li>
+      <li><a href="#sec-ref">10. Referencia rápida</a></li>
+    </ul>
+  </nav>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="content">
+
+    <!-- ══════════════════════════════════════════
+         1. INTRODUCCIÓN
+    ══════════════════════════════════════════ -->
+    <section class="sec" id="sec-intro">
+      <div class="sec-hd">
+        <div class="sec-icon">📋</div>
+        <div>
+          <h2>1. Introducción</h2>
+          <div class="sec-num">Propósito y alcance del manual</div>
+        </div>
+      </div>
+      <div class="sec-body">
+        <p>Este manual técnico describe cómo administrar, actualizar y escalar el <strong>Portal Maestro Institucional de Gestión de Tratamiento de Datos Personales del IESS</strong>, archivo <code class="code-inline">Portal-IESS-DataProtection.html</code>.</p>
+
+        <div class="call info">
+          <span class="call-icon">ℹ️</span>
+          <div class="call-body">
+            <strong>Formato standalone</strong>
+            El portal es un único archivo HTML independiente. No requiere servidor web, frameworks ni conexión a internet para funcionar en red local. Todo el CSS, JavaScript y el logo institucional están embebidos dentro del mismo archivo.
+          </div>
+        </div>
+
+        <h3>Herramientas necesarias para editar</h3>
+        <ul>
+          <li><strong>Editor de texto recomendado:</strong> Visual Studio Code (gratuito) — <code class="code-inline">code.visualstudio.com</code></li>
+          <li><strong>Alternativa:</strong> Notepad++, Sublime Text</li>
+          <li><strong>Navegador para previsualizar:</strong> Google Chrome, Microsoft Edge</li>
+          <li><strong>Para conversión de logo a base64:</strong> Python 3 (ya instalado en el sistema)</li>
+        </ul>
+
+        <h3>Convenciones usadas en este manual</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Símbolo</th><th>Significado</th></tr></thead>
+            <tbody>
+              <tr><td><code>código en gris</code></td><td>Fragmento de código HTML que debe buscarse o editarse en el archivo</td></tr>
+              <tr><td><span class="badge navy">GSI-P05-I01</span></td><td>Código del documento según nomenclatura institucional</td></tr>
+              <tr><td><span class="badge ok">Disponible</span></td><td>Documento ya publicado y con hipervínculo activo</td></tr>
+              <tr><td><span class="badge warn">Pendiente</span></td><td>Documento aún sin publicar — hipervínculo deshabilitado</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         2. ESTRUCTURA DEL PORTAL
+    ══════════════════════════════════════════ -->
+    <section class="sec" id="sec-estructura">
+      <div class="sec-hd">
+        <div class="sec-icon">🗂️</div>
+        <div>
+          <h2>2. Estructura del Portal</h2>
+          <div class="sec-num">Árbol de archivos y secciones lógicas</div>
+        </div>
+      </div>
+      <div class="sec-body">
+
+        <h3 id="sec-estructura-archivos">2.1 Árbol de archivos esperado</h3>
+        <p>El portal asume la siguiente estructura de carpetas. <strong>Todos los archivos HTML deben estar en la misma carpeta</strong>; los PDF están un nivel arriba.</p>
+        <div class="tree">
+<span class="dir">Sistema DataProtection/</span>
+├── <span class="file">Ley de Protección de Datos Personales.pdf</span>   <span class="note">← PDF referenciado con ../</span>
+├── <span class="file">Reglamento de la LOPDP.pdf</span>                   <span class="note">← PDF referenciado con ../</span>
+│
+└── <span class="dir">HTML/</span>
+    ├── <span class="file active">Portal-IESS-DataProtection.html</span>    <span class="note">← PORTAL MAESTRO (este archivo)</span>
+    ├── <span class="file active">Manual-Tecnico-Portal-IESS.html</span>    <span class="note">← Este manual</span>
+    ├── <span class="file">EIPDP-Ecuador-App.html</span>
+    ├── <span class="file">Checklist_Diseno_Defecto_IESS.html</span>
+    ├── <span class="file">BibliotecaNormativa.html</span>
+    ├── <span class="file">Ley_-_Reglamento.html</span>
+    │
+    ├── <span class="note">── Documentos a agregar (cuando estén listos) ──</span>
+    ├── <span class="file">GSI-P05-Manual.html</span>                       <span class="note">← Manual principal</span>
+    ├── <span class="file">GSI-P05-I01-Legitimidad.html</span>
+    ├── <span class="file">GSI-P05-I02-RAT.html</span>
+    ├── <span class="file">GSI-P05-I03-EIPD.html</span>
+    ├── <span class="file">GSI-P05-I04-Derechos.html</span>
+    ├── <span class="file">GSI-P05-I05-Acceso.html</span>
+    ├── <span class="file">GSI-P05-I06-Conservacion.html</span>
+    ├── <span class="file">GSI-P05-I07-Eliminacion.html</span>
+    ├── <span class="file">GSI-P05-F01.html</span>  <span class="note">... hasta F11</span>
+    ├── <span class="file">GSI-P05-Diagrama.html</span>
+    ├── <span class="file">GSI-P05-Matriz-RAT.html</span>
+    └── <span class="file">GSI-P05-Matriz-EIPD.html</span>
+        </div>
+
+        <div class="call warn">
+          <span class="call-icon">⚠️</span>
+          <div class="call-body">
+            <strong>Rutas relativas</strong>
+            El portal usa rutas relativas. No mover los archivos a subcarpetas distintas sin actualizar las rutas en el HTML. Los PDF siempre se referencian con <code class="code-inline">../NombreArchivo.pdf</code> (un nivel arriba de HTML/).
+          </div>
+        </div>
+
+        <h3 id="sec-estructura-secciones">2.2 Secciones del portal</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>ID HTML</th><th>Sección</th><th>Contenido</th></tr></thead>
+            <tbody>
+              <tr><td><code>#sec-normativo</code></td><td>Marco Normativo</td><td>Resolución C.D. 705 y Resolución IESS-DG-2026-0062-R</td></tr>
+              <tr><td><code>#sec-manual</code></td><td>Manual GSI-P05</td><td>Accordion expandible con 3 tabs: Instructivos, Formatos, Matrices</td></tr>
+              <tr><td><code>#sec-herramientas</code></td><td>Herramientas</td><td>4 aplicaciones HTML interactivas</td></tr>
+              <tr><td><code>#sec-leyes</code></td><td>Legislación</td><td>LOPDP y Reglamento en PDF</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         3. CÓMO ABRIR EL PORTAL
+    ══════════════════════════════════════════ -->
+    <section class="sec" id="sec-abrir">
+      <div class="sec-hd">
+        <div class="sec-icon">🌐</div>
+        <div>
+          <h2>3. Cómo abrir el portal</h2>
+          <div class="sec-num">Uso local y en red</div>
+        </div>
+      </div>
+      <div class="sec-body">
+        <h3>Apertura local (PC individual)</h3>
+        <p>Hacer doble clic sobre <code class="code-inline">Portal-IESS-DataProtection.html</code>. El navegador predeterminado lo abrirá directamente. No se necesita internet ni servidor.</p>
+
+        <h3>Apertura en red local (LAN institucional)</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Compartir la carpeta HTML</div>
+              <div class="step-desc">En el equipo que actuará como servidor: clic derecho sobre la carpeta <code class="code-inline">HTML/</code> → Propiedades → Compartir → dar acceso de lectura a los usuarios de la red.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Acceder desde otro equipo</div>
+              <div class="step-desc">Desde el equipo cliente, en el Explorador de Windows escribir: <code class="code-inline">\\NOMBRE-SERVIDOR\HTML\Portal-IESS-DataProtection.html</code> y presionar Enter. Se abrirá en el navegador.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Crear acceso directo</div>
+              <div class="step-desc">Arrastrar el archivo desde la ruta de red al escritorio del usuario para crear un acceso directo permanente.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="call ok">
+          <span class="call-icon">✅</span>
+          <div class="call-body">
+            <strong>Ventaja standalone</strong>
+            Como el logo y todo el contenido están embebidos, el portal se ve correctamente aunque el usuario no tenga acceso a internet o a servidores externos.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         4. AGREGAR DOCUMENTOS
+    ══════════════════════════════════════════ -->
+    <section class="sec" id="sec-agregar-doc">
+      <div class="sec-hd">
+        <div class="sec-icon">📄</div>
+        <div>
+          <h2>4. Agregar documentos</h2>
+          <div class="sec-num">Cómo activar y enlazar documentos en el portal</div>
+        </div>
+      </div>
+      <div class="sec-body">
+
+        <h3 id="sec-agregar-html">4.1 Enlazar un archivo HTML nuevo</h3>
+        <p>Cuando un documento HTML esté listo (por ejemplo, el Manual principal <code class="code-inline">GSI-P05-Manual.html</code>):</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Copiar el archivo HTML a la carpeta</div>
+              <div class="step-desc">Colocar el archivo en <code class="code-inline">Desktop\Sistema DataProtection\HTML\</code> — la misma carpeta donde está el portal.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Abrir el portal en VS Code</div>
+              <div class="step-desc">Clic derecho sobre <code class="code-inline">Portal-IESS-DataProtection.html</code> → "Abrir con" → Visual Studio Code.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Buscar la tarjeta del documento</div>
+              <div class="step-desc">Presionar <kbd>Ctrl+F</kbd> y buscar el código del documento, por ejemplo <code class="code-inline">GSI-P05</code> o el título del documento que quieres activar.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <div class="step-title">Cambiar el estado de "pending" a "available"</div>
+              <div class="step-desc">Cada tarjeta de documento pendiente tiene esta estructura. Realiza los 3 cambios marcados:</div>
+            </div>
+          </div>
+        </div>
+
+        <p><strong>Estructura actual (pendiente):</strong></p>
+        <div class="code-block">
+          <span class="code-label">HTML — antes</span>
+&lt;article class="doc-card <span style="color:#fbbf24">pending</span>" ...&gt;
+  ...
+  &lt;div class="doc-card-footer"&gt;
+    &lt;div class="doc-status <span style="color:#fbbf24">pending</span>" ...&gt;
+      &lt;span class="status-dot <span style="color:#fbbf24">pending</span>"&gt;&lt;/span&gt;
+      Pendiente publicación
+    &lt;/div&gt;
+    &lt;a href="<span style="color:#fbbf24">#</span>" class="doc-link <span style="color:#fbbf24">disabled</span>" aria-disabled="true" tabindex="-1"&gt;
+      Próximamente
+    &lt;/a&gt;
+  &lt;/div&gt;
+&lt;/article&gt;
+        </div>
+
+        <p><strong>Estructura activada (disponible):</strong></p>
+        <div class="code-block">
+          <span class="code-label">HTML — después</span>
+&lt;article class="doc-card <span style="color:#86efac">available</span>" ...&gt;
+  ...
+  &lt;div class="doc-card-footer"&gt;
+    &lt;div class="doc-status <span style="color:#86efac">available</span>" ...&gt;
+      &lt;span class="status-dot <span style="color:#86efac">available</span>"&gt;&lt;/span&gt;
+      Disponible
+    &lt;/div&gt;
+    &lt;a href="<span style="color:#86efac">GSI-P05-Manual.html</span>" class="doc-link <span style="color:#86efac">active</span>" target="_blank" rel="noopener"&gt;
+      Abrir documento
+    &lt;/a&gt;
+  &lt;/div&gt;
+&lt;/article&gt;
+        </div>
+
+        <div class="call info">
+          <span class="call-icon">💡</span>
+          <div class="call-body">
+            <strong>Resumen de los 3 cambios</strong>
+            (1) <code class="code-inline">pending</code> → <code class="code-inline">available</code> en la clase del article y en el doc-status/status-dot. (2) <code class="code-inline">href="#"</code> → el nombre del archivo HTML. (3) <code class="code-inline">disabled</code> → <code class="code-inline">active</code> en la clase del enlace, y quitar <code class="code-inline">aria-disabled</code> y <code class="code-inline">tabindex="-1"</code>.
+          </div>
+        </div>
+
+        <h3 id="sec-agregar-pdf">4.2 Enlazar un archivo PDF</h3>
+        <p>Si el documento es un PDF, el proceso es idéntico pero la ruta cambia según dónde esté el archivo:</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Ubicación del PDF</th><th>Ruta a usar en href</th></tr></thead>
+            <tbody>
+              <tr><td>Carpeta <code>HTML/</code> (misma que el portal)</td><td><code>MiDocumento.pdf</code></td></tr>
+              <tr><td>Carpeta <code>Sistema DataProtection/</code> (un nivel arriba)</td><td><code>../MiDocumento.pdf</code></td></tr>
+              <tr><td>Subcarpeta dentro de <code>HTML/</code></td><td><code>subcarpeta/MiDocumento.pdf</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="sec-agregar-instructivo">4.3 Activar un Instructivo (dentro del Manual)</h3>
+        <p>Los instructivos están en el tab "Instructivos" del accordion del Manual. Buscar en el portal (Ctrl+F) el código del instructivo, por ejemplo <code class="code-inline">GSI-P05-I01</code>, y aplicar los mismos 3 cambios del punto 4.1 sobre las clases <code class="code-inline">sub-link</code>:</p>
+        <div class="code-block">
+          <span class="code-label">Antes (pendiente)</span>
+&lt;a href="#" class="sub-link <span style="color:#fbbf24">disabled</span>" aria-disabled="true" tabindex="-1"&gt;
+  Ver documento
+&lt;/a&gt;
+        </div>
+        <div class="code-block">
+          <span class="code-label">Después (activo)</span>
+&lt;a href="<span style="color:#86efac">GSI-P05-I01-Legitimidad.html</span>" class="sub-link <span style="color:#86efac">active</span>" target="_blank" rel="noopener"&gt;
+  Ver instructivo
+&lt;/a&gt;
+        </div>
+        <p>También cambiar el bloque <code class="code-inline">doc-status</code> de la tarjeta de <code class="code-inline">pending</code> a <code class="code-inline">available</code>:</p>
+        <div class="code-block">
+&lt;div class="doc-status <span style="color:#86efac">available</span>" style="font-size:10.5px"&gt;
+  &lt;span class="status-dot <span style="color:#86efac">available</span>" aria-hidden="true"&gt;&lt;/span&gt;Disponible
+&lt;/div&gt;
+        </div>
+
+        <h3 id="sec-agregar-formato">4.4 Activar un Formato</h3>
+        <p>Los formatos están en el tab "Formatos". El proceso es idéntico al instructivo. Buscar <code class="code-inline">GSI-P05-F01</code> (o el número que corresponda) y aplicar los mismos cambios.</p>
+
+        <div class="call ok">
+          <span class="call-icon">✅</span>
+          <div class="call-body">
+            <strong>Consejo</strong>
+            Usa VS Code con la extensión "Live Preview" para ver los cambios en tiempo real mientras editas el portal. Instala la extensión buscando "Live Preview" en el panel de extensiones (Ctrl+Shift+X).
+          </div>
+        </div>
+
+        <h3 id="sec-agregar-herramienta">4.5 Agregar una nueva herramienta técnica</h3>
+        <p>Para agregar una nueva tarjeta en la sección "Herramientas Técnicas", copiar el siguiente bloque dentro de <code class="code-inline">&lt;div class="tools-grid"&gt;</code>:</p>
+        <div class="code-block">
+          <span class="code-label">Plantilla de tarjeta de herramienta</span>
+&lt;article class="tool-card" aria-labelledby="tool-NUEVO-title"&gt;
+  &lt;div class="tool-card-stripe CLASE-COLOR" aria-hidden="true"&gt;&lt;/div&gt;
+  &lt;div class="tool-card-body"&gt;
+    &lt;div class="tool-icon CLASE-COLOR" aria-hidden="true"&gt;
+      &lt;!-- SVG del ícono aquí --&gt;
+    &lt;/div&gt;
+    &lt;h3 class="tool-title" id="tool-NUEVO-title"&gt;Nombre de la Herramienta&lt;/h3&gt;
+    &lt;p class="tool-desc"&gt;Descripción de la herramienta...&lt;/p&gt;
+    &lt;div class="tool-features"&gt;
+      &lt;div class="tool-feature"&gt;Característica 1&lt;/div&gt;
+      &lt;div class="tool-feature"&gt;Característica 2&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="tool-card-footer"&gt;
+    &lt;a href="NombreArchivo.html" class="tool-btn primary" target="_blank" rel="noopener"&gt;
+      Abrir herramienta
+    &lt;/a&gt;
+  &lt;/div&gt;
+&lt;/article&gt;
+        </div>
+        <p>Las clases de color disponibles para <code class="code-inline">tool-card-stripe</code> y <code class="code-inline">tool-icon</code> son: <code class="code-inline">eipdp</code> (azul navy), <code class="code-inline">check</code> (verde), <code class="code-inline">biblio</code> (morado), <code class="code-inline">ley</code> (dorado). Para agregar un color nuevo, añadir en el CSS una regla como <code class="code-inline">.tool-card-stripe.nuevo { background: #color; }</code>.</p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         5. LOGO Y BRANDING
+    ══════════════════════════════════════════ -->
+    <section class="sec" id="sec-logo">
+      <div class="sec-hd">
+        <div class="sec-icon">🎨</div>
+        <div>
+          <h2>5. Logo y branding institucional</h2>
+          <div class="sec-num">Actualización del logo y paleta de colores</div>
+        </div>
+      </div>
+      <div class="sec-body">
+        <h3>Cómo actualizar el logo</h3>
+        <p>El logo del IESS está embebido como <strong>Base64</strong> directamente en el HTML. Si el logo cambia, seguir estos pasos:</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Obtener el nuevo archivo PNG del logo</div>
+              <div class="step-desc">Ruta de referencia del logo actual: <code class="code-inline">E:\Gestión IESS\Imagen institucional\...\Logotipo-IESS-horizontal.png</code></div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Convertir a Base64 con Python</div>
+              <div class="step-desc">Abrir PowerShell y ejecutar:</div>
+            </div>
+          </div>
+        </div>
+        <div class="code-block">
+          <span class="code-label">PowerShell</span>
+python -c "
+import base64
+with open(r'RUTA\AL\LOGO.png', 'rb') as f:
+    b64 = base64.b64encode(f.read()).decode()
+with open(r'logo_b64.txt', 'w') as out:
+    out.write(b64)
+print('Listo:', len(b64), 'chars')
+"
+        </div>
+        <div class="steps" style="margin-top:12px">
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Reemplazar en el portal</div>
+              <div class="step-desc">En el portal, buscar (Ctrl+F) <code class="code-inline">data:image/png;base64,</code>. Hay exactamente una ocurrencia. Seleccionar toda la cadena base64 (desde la coma hasta el cierre de comillas) y pegar el nuevo contenido del archivo <code class="code-inline">logo_b64.txt</code>.</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Paleta de colores institucionales</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Variable CSS</th><th>Valor HEX</th><th>Uso</th></tr></thead>
+            <tbody>
+              <tr><td><code>--iess-navy</code></td><td><code>#1a3a5c</code></td><td>Color principal — fondos de cabecera, sección, botones</td></tr>
+              <tr><td><code>--iess-navy-dark</code></td><td><code>#122840</code></td><td>Variante oscura — pie de página</td></tr>
+              <tr><td><code>--iess-gold</code></td><td><code>#e8a000</code></td><td>Acento dorado — bordes, badges, énfasis</td></tr>
+              <tr><td><code>--iess-gold-dark</code></td><td><code>#c88800</code></td><td>Dorado oscuro — textos sobre fondo claro</td></tr>
+              <tr><td><code>--iess-green</code></td><td><code>#1f7a4a</code></td><td>Estado "Disponible" — documentos activos</td></tr>
+              <tr><td><code>--iess-pending</code></td><td><code>#94a3b8</code></td><td>Estado "Pendiente" — documentos sin publicar</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Para cambiar cualquier color, editar los valores en el bloque <code class="code-inline">:root { ... }</code> al inicio del CSS (primeras líneas del <code class="code-inline">&lt;style&gt;</code>).</p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         6. ESTADOS DE DOCUMENTO
+    ══════════════════════════════════════════ -->
+    <section class="sec" id="sec-estado">
+      <div class="sec-hd">
+        <div class="sec-icon">🔖</div>
+        <div>
+          <h2>6. Estados de documento</h2>
+          <div class="sec-num">Sistema de estados y clases CSS</div>
+        </div>
+      </div>
+      <div class="sec-body">
+        <p>Cada tarjeta de documento tiene un estado visual que indica si el documento está disponible o pendiente:</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Estado</th><th>Clase article</th><th>Clase status</th><th>Clase enlace</th><th>Visual</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Pendiente</strong></td>
+                <td><code>doc-card pending</code></td>
+                <td><code>doc-status pending</code> / <code>status-dot pending</code></td>
+                <td><code>doc-link disabled</code></td>
+                <td>Borde izquierdo gris, enlace deshabilitado, texto "Pendiente"</td>
+              </tr>
+              <tr>
+                <td><strong>Disponible</strong></td>
+                <td><code>doc-card available</code></td>
+                <td><code>doc-status available</code> / <code>status-dot available</code></td>
+                <td><code>doc-link active</code></td>
+                <td>Borde izquierdo verde, enlace activo azul navy</td>
+              </tr>
+              <tr>
+                <td><strong>Destacado</strong></td>
+                <td><code>doc-card featured</code></td>
+                <td>—</td>
+                <td><code>doc-link active</code></td>
+                <td>Borde dorado, fondo ligeramente amarillo</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="call info">
+          <span class="call-icon">ℹ️</span>
+          <div class="call-body">
+            <strong>Sub-cards (instructivos y formatos)</strong>
+            Usan las clases <code class="code-inline">sub-link active</code> / <code class="code-inline">sub-link disabled</code> en lugar de <code class="code-inline">doc-link</code>, pero el principio es el mismo.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         7. TABS DEL MANUAL
+    ══════════════════════════════════════════ -->
+    <section class="sec" id="sec-manual-tabs">
+      <div class="sec-hd">
+        <div class="sec-icon">📂</div>
+        <div>
+          <h2>7. Tabs del Manual GSI-P05</h2>
+          <div class="sec-num">Accordion y sistema de tabs</div>
+        </div>
+      </div>
+      <div class="sec-body">
+        <h3>Cómo funciona el accordion</h3>
+        <p>El Manual GSI-P05 tiene un botón que expande/colapsa el contenido. El JavaScript que lo controla es la función <code class="code-inline">toggleManual(this)</code>. No es necesario modificarla.</p>
+
+        <h3>Tabs internos del manual</h3>
+        <p>Dentro del accordion hay 3 tabs: <strong>Instructivos</strong>, <strong>Formatos</strong> y <strong>Matrices y Diagrama</strong>. Cada tab corresponde a un <code class="code-inline">&lt;div class="manual-tab-content"&gt;</code> con su ID:</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Tab</th><th>ID del panel</th><th>Contenido</th></tr></thead>
+            <tbody>
+              <tr><td>Instructivos</td><td><code>tab-instructivos</code></td><td>7 sub-cards (I01 a I07)</td></tr>
+              <tr><td>Formatos</td><td><code>tab-formatos</code></td><td>11 sub-cards (F01 a F11)</td></tr>
+              <tr><td>Matrices y Diagrama</td><td><code>tab-matrices</code></td><td>3 sub-cards (RAT, EIPD, Diagrama)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Agregar un nuevo tab (si se necesita)</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Agregar botón del tab</div>
+              <div class="step-desc">Dentro de <code class="code-inline">&lt;div class="manual-tabs"&gt;</code>, copiar un botón existente y cambiar el texto, el <code class="code-inline">aria-controls</code> y el <code class="code-inline">id</code> del botón.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Agregar panel del tab</div>
+              <div class="step-desc">Debajo del último <code class="code-inline">&lt;div class="manual-tab-content"&gt;</code>, agregar un nuevo div con el ID que corresponde al <code class="code-inline">aria-controls</code> del botón.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         8. MIGRACIÓN A GOOGLE DRIVE / WORKSPACE
+    ══════════════════════════════════════════ -->
+    <section class="sec" id="sec-google">
+      <div class="sec-hd">
+        <div class="sec-icon">☁️</div>
+        <div>
+          <h2>8. Migración a Google Drive / Workspace</h2>
+          <div class="sec-num">Opciones para acceso externo sin servidor propio</div>
+        </div>
+      </div>
+      <div class="sec-body">
+        <div class="call warn">
+          <span class="call-icon">⚠️</span>
+          <div class="call-body">
+            <strong>Limitación importante</strong>
+            Google Drive <strong>no puede ejecutar archivos HTML interactivos</strong> directamente como sitio web (la función "Hospedar como sitio web" fue descontinuada). Sin embargo, existen opciones que funcionan muy bien para el caso del portal.
+          </div>
+        </div>
+
+        <h3>Opción A — Google Drive (solo descarga/apertura local)</h3>
+        <p><strong>Recomendado para uso interno básico.</strong> Sube todos los archivos a una carpeta compartida de Google Drive. El usuario descarga el portal y lo abre localmente.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Subir toda la carpeta HTML/ a Google Drive</div>
+              <div class="step-desc">En Google Drive, clic en "Nuevo" → "Subir carpeta" → seleccionar la carpeta <code class="code-inline">HTML/</code> completa. También subir los PDF de la carpeta padre.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Compartir la carpeta</div>
+              <div class="step-desc">Clic derecho sobre la carpeta → "Compartir" → ingresar los correos institucionales o generar un enlace con "Cualquier usuario de la organización puede ver".</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">El usuario descarga y abre</div>
+              <div class="step-desc">El destinatario descarga el archivo <code class="code-inline">Portal-IESS-DataProtection.html</code> y lo abre en su navegador. Como el logo y CSS están embebidos, funciona perfectamente sin conexión.</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Cambios necesarios para que los enlaces funcionen desde Drive</h3>
+        <p>Cuando el portal se usa desde Google Drive descargado, los enlaces a los demás archivos HTML deben apuntar a archivos también descargados en la misma carpeta. <strong>Esto funciona sin cambios</strong> si el usuario descarga toda la carpeta completa.</p>
+        <p>Para los PDF, cambiar las rutas en el portal de <code class="code-inline">../archivo.pdf</code> a solo <code class="code-inline">archivo.pdf</code> si se reubican los PDF dentro de la misma carpeta HTML/.</p>
+
+        <h3>Opción B — Google Sites (portal web real sin costo adicional)</h3>
+        <p><strong>Recomendado para acceso web permanente.</strong> Google Sites permite crear un mini-sitio web institucional con URLs permanentes, usando tu cuenta de Google Workspace (@iess.gob.ec o equivalente).</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Crear un Google Site</div>
+              <div class="step-desc">Ir a <code class="code-inline">sites.google.com</code> con la cuenta institucional → "Nuevo sitio" → elegir plantilla en blanco.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Insertar el portal como HTML embebido</div>
+              <div class="step-desc">En el editor de Sites: insertar → "Insertar" → "Insertar HTML" → pegar el contenido completo del portal. <strong>Limitación:</strong> Google Sites tiene restricciones de seguridad que pueden bloquear algunos estilos o scripts. Funciona mejor para páginas informativas con hipervínculos.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Subir los archivos HTML a Google Drive y obtener vínculos</div>
+              <div class="step-desc">Para que los hipervínculos funcionen desde Sites, cada archivo HTML (.html) debe subirse a Drive y se debe obtener su enlace de "Vista previa" para usarlo como href en el portal. Esto requiere actualización manual de cada enlace.</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Opción C — GitHub Pages (recomendada para acceso web completo)</h3>
+        <p><strong>La solución más robusta y gratuita</strong> para publicar el portal exactamente como fue diseñado, con todas las funcionalidades activas.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Crear cuenta en GitHub</div>
+              <div class="step-desc">Registrar en <code class="code-inline">github.com</code> con el correo institucional. Crear un repositorio privado o público llamado <code class="code-inline">iess-portal-datos</code>.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Subir los archivos</div>
+              <div class="step-desc">Subir todos los archivos HTML y PDF al repositorio. El archivo principal debe llamarse <code class="code-inline">index.html</code> (renombrar el portal) o configurar el archivo principal en las opciones de Pages.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Habilitar GitHub Pages</div>
+              <div class="step-desc">En el repositorio: Settings → Pages → Source: "Deploy from branch" → branch: main → folder: / (root) → Save. En 2-3 minutos el portal estará en <code class="code-inline">https://usuario.github.io/iess-portal-datos/</code></div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Comparación de opciones</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Aspecto</th><th>Google Drive</th><th>Google Sites</th><th>GitHub Pages</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Complejidad</strong></td><td>Baja</td><td>Media</td><td>Media</td></tr>
+              <tr><td><strong>Portal completo funcional</strong></td><td>Sí (descarga)</td><td>Parcial</td><td>Sí (web real)</td></tr>
+              <tr><td><strong>URL permanente</strong></td><td>No</td><td>Sí</td><td>Sí</td></tr>
+              <tr><td><strong>Acceso sin descarga</strong></td><td>No</td><td>Sí</td><td>Sí</td></tr>
+              <tr><td><strong>Costo</strong></td><td>Gratis</td><td>Gratis (Workspace)</td><td>Gratis</td></tr>
+              <tr><td><strong>Control de acceso</strong></td><td>Drive sharing</td><td>Sites sharing</td><td>Repo privado</td></tr>
+              <tr><td><strong>Enlaza con Drive PDFs</strong></td><td>Sí</td><td>Sí</td><td>Requiere ajuste</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Ajuste de rutas para uso en web (GitHub Pages o Sites)</h3>
+        <p>Si el portal se publica en web, los PDF no pueden estar como archivos locales. Las opciones son:</p>
+        <ul>
+          <li><strong>Subir los PDF a Google Drive</strong> y compartirlos como "Cualquiera con el enlace puede ver". Luego reemplazar los <code class="code-inline">href="../archivo.pdf"</code> por la URL de Drive (formato: <code class="code-inline">https://drive.google.com/file/d/ID/view</code>).</li>
+          <li><strong>Subir los PDF al mismo repositorio de GitHub</strong> y referenciarlos como rutas relativas normales.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         9. MANTENIMIENTO
+    ══════════════════════════════════════════ -->
+    <section class="sec" id="sec-mant">
+      <div class="sec-hd">
+        <div class="sec-icon">🔧</div>
+        <div>
+          <h2>9. Mantenimiento del portal</h2>
+          <div class="sec-num">Actualizaciones periódicas y control de versiones</div>
+        </div>
+      </div>
+      <div class="sec-body">
+        <h3>Control de versiones recomendado</h3>
+        <p>Antes de hacer cambios al portal, guardar una copia de seguridad con la fecha:</p>
+        <div class="code-block">
+Portal-IESS-DataProtection.html                ← versión activa
+Portal-IESS-DataProtection-2026-07-05.html     ← copia de seguridad
+        </div>
+
+        <h3>Checklist de mantenimiento mensual</h3>
+        <ul>
+          <li>Verificar si hay nuevos documentos aprobados y activar sus tarjetas</li>
+          <li>Actualizar la fecha "Última actualización" en el subheader del portal</li>
+          <li>Verificar que los enlaces a PDF existentes siguen funcionando</li>
+          <li>Revisar que los archivos HTML referenciados no han sido renombrados</li>
+          <li>Si hubo cambios al logo institucional, actualizar el base64</li>
+        </ul>
+
+        <h3>Actualizar la fecha en el subheader</h3>
+        <p>Buscar en el portal (Ctrl+F): <code class="code-inline">Vigente · Julio 2026</code> y actualizar al mes y año correspondiente.</p>
+
+        <h3>Actualizar la versión en el pie de página</h3>
+        <p>Buscar: <code class="code-inline">Portal v1.0</code> y el texto <code class="code-inline">v1.0 · Julio 2026</code> en el footer. Actualizar según corresponda.</p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         10. REFERENCIA RÁPIDA
+    ══════════════════════════════════════════ -->
+    <section class="sec" id="sec-ref">
+      <div class="sec-hd">
+        <div class="sec-icon">⚡</div>
+        <div>
+          <h2>10. Referencia rápida</h2>
+          <div class="sec-num">Tabla de documentos y sus estados actuales</div>
+        </div>
+      </div>
+      <div class="sec-body">
+        <h3>Estado actual de todos los documentos</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Código</th><th>Documento</th><th>Tipo</th><th>Estado</th><th>Archivo esperado</th></tr></thead>
+            <tbody>
+              <tr><td>C.D. 705</td><td>Política de Protección de Datos</td><td><span class="badge navy">Resolución</span></td><td><span class="badge warn">Pendiente</span></td><td>—</td></tr>
+              <tr><td>IESS-DG-2026-0062-R</td><td>Resolución de aprobación Manual</td><td><span class="badge navy">Resolución</span></td><td><span class="badge warn">Pendiente</span></td><td>—</td></tr>
+              <tr><td>GSI-P05</td><td>Manual de Gestión de Datos Personales</td><td><span class="badge gold">Manual</span></td><td><span class="badge warn">Pendiente</span></td><td><code>GSI-P05-Manual.html</code></td></tr>
+              <tr><td>GSI-P05-I01</td><td>Instructivo Legitimidad del Tratamiento</td><td><span class="badge ok">Instructivo</span></td><td><span class="badge warn">Pendiente</span></td><td><code>GSI-P05-I01.html</code></td></tr>
+              <tr><td>GSI-P05-I02</td><td>Instructivo Registro de Actividades (RAT)</td><td><span class="badge ok">Instructivo</span></td><td><span class="badge warn">Pendiente</span></td><td><code>GSI-P05-I02.html</code></td></tr>
+              <tr><td>GSI-P05-I03</td><td>Instructivo EIPD</td><td><span class="badge ok">Instructivo</span></td><td><span class="badge warn">Pendiente</span></td><td><code>GSI-P05-I03.html</code></td></tr>
+              <tr><td>GSI-P05-I04</td><td>Instructivo Ejercicio de Derechos</td><td><span class="badge ok">Instructivo</span></td><td><span class="badge warn">Pendiente</span></td><td><code>GSI-P05-I04.html</code></td></tr>
+              <tr><td>GSI-P05-I05</td><td>Instructivo Acceso, Comunicación y Transferencia</td><td><span class="badge ok">Instructivo</span></td><td><span class="badge warn">Pendiente</span></td><td><code>GSI-P05-I05.html</code></td></tr>
+              <tr><td>GSI-P05-I06</td><td>Instructivo Conservación de Datos</td><td><span class="badge ok">Instructivo</span></td><td><span class="badge warn">Pendiente</span></td><td><code>GSI-P05-I06.html</code></td></tr>
+              <tr><td>GSI-P05-I07</td><td>Instructivo Eliminación Segura</td><td><span class="badge ok">Instructivo</span></td><td><span class="badge warn">Pendiente</span></td><td><code>GSI-P05-I07.html</code></td></tr>
+              <tr><td>GSI-P05-F01 al F11</td><td>Formatos 1 al 11</td><td><span class="badge purple">Formato</span></td><td><span class="badge warn">Pendiente</span></td><td><code>GSI-P05-F01.html ... F11.html</code></td></tr>
+              <tr><td>GSI-P05-DG01</td><td>Diagrama del Proceso</td><td><span class="badge navy">Diagrama</span></td><td><span class="badge warn">Pendiente</span></td><td><code>GSI-P05-Diagrama.html</code></td></tr>
+              <tr><td>GSI-P05-RAT</td><td>Matriz RAT</td><td><span class="badge navy">Matriz</span></td><td><span class="badge warn">Pendiente</span></td><td><code>GSI-P05-Matriz-RAT.html</code></td></tr>
+              <tr><td>GSI-P05-EIPD</td><td>Matriz EIPD</td><td><span class="badge navy">Matriz</span></td><td><span class="badge warn">Pendiente</span></td><td><code>GSI-P05-Matriz-EIPD.html</code></td></tr>
+              <tr><td>—</td><td>Aplicación EIPDP Ecuador</td><td><span class="badge ok">Herramienta</span></td><td><span class="badge ok">Disponible</span></td><td><code>EIPDP-Ecuador-App.html</code></td></tr>
+              <tr><td>—</td><td>Checklist Diseño por Defecto</td><td><span class="badge ok">Herramienta</span></td><td><span class="badge ok">Disponible</span></td><td><code>Checklist_Diseno_Defecto_IESS.html</code></td></tr>
+              <tr><td>—</td><td>Biblioteca Normativa</td><td><span class="badge ok">Herramienta</span></td><td><span class="badge ok">Disponible</span></td><td><code>BibliotecaNormativa.html</code></td></tr>
+              <tr><td>—</td><td>Ley y Reglamento — Visualizador</td><td><span class="badge ok">Herramienta</span></td><td><span class="badge ok">Disponible</span></td><td><code>Ley_-_Reglamento.html</code></td></tr>
+              <tr><td>—</td><td>Ley Orgánica de Protección de Datos</td><td><span class="badge gold">PDF</span></td><td><span class="badge ok">Disponible</span></td><td><code>../Ley de Protección de Datos Personales.pdf</code></td></tr>
+              <tr><td>—</td><td>Reglamento de la LOPDP</td><td><span class="badge gold">PDF</span></td><td><span class="badge ok">Disponible</span></td><td><code>../Reglamento de la LOPDP.pdf</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+</div><!-- /wrap -->
+
+<!-- PIE -->
+<div id="footer">
+  <span><strong>Manual Técnico — Portal GSI-P05</strong> · Instituto Ecuatoriano de Seguridad Social · República del Ecuador</span>
+  <span class="version-tag">v1.0 · Julio 2026</span>
+</div>
+
+<script>
+/* TOC activo por scroll */
+(function(){
+  const sections = document.querySelectorAll('.sec');
+  const tocLinks = document.querySelectorAll('.toc-list li');
+  function onScroll(){
+    const mid = window.scrollY + window.innerHeight/2;
+    let active = null;
+    sections.forEach(s => { if(s.offsetTop <= mid) active = s.id; });
+    tocLinks.forEach(li => {
+      const a = li.querySelector('a');
+      li.classList.toggle('active', a && a.getAttribute('href') === '#'+active);
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+</body>
+</html>
